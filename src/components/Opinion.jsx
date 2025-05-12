@@ -1,14 +1,26 @@
-import { use, useActionState } from "react";
+import { use, useActionState, useOptimistic } from "react";
 import { OpinionsContext } from '../store/opinions-context.jsx';
 
 export function Opinion({ opinion: { id, title, body, userName, votes } }) {
   const { upvoteOpinion, downvoteOpinion } = use(OpinionsContext);
 
+  /**
+   * Should be called inside form actions. useOptimistic can detect in which form action they are in.
+   * PreviousVotes is passed automatically by React. Any other parameters are passed by us.
+   * It gives us a temporary value that is shown as long as the the form is being submitted.
+   * 
+   * It updates the value instantly, before the request is completed.
+   * If an error occurs during request, value is reverted to previous value.
+   */
+  const [optimisticVotes, setVotesOptimistically] = useOptimistic(votes, (previousVotes, mode) => (mode === 'up' ? previousVotes + 1 : previousVotes - 1));
+
   async function upvoteAction() {
+    setVotesOptimistically('up'); //should be called before request
     await upvoteOpinion(id);
   }
 
   async function downvoteAction() {
+    setVotesOptimistically('down'); //should be called before request
     await downvoteOpinion(id);
   }
 
@@ -48,7 +60,7 @@ export function Opinion({ opinion: { id, title, body, userName, votes } }) {
           </svg>
         </button>
 
-        <span>{votes}</span>
+        <span>{optimisticVotes}</span>
 
         <button
           formAction={downvoteFormAction}
