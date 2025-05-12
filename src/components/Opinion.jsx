@@ -1,10 +1,15 @@
+import { use } from "react";
+import { OpinionsContext } from '../store/opinions-context.jsx';
+
 export function Opinion({ opinion: { id, title, body, userName, votes } }) {
-  function upvoteAction() {
-    console.log("Upvote");
+  const { upvoteOpinion, downvoteOpinion } = use(OpinionsContext);
+
+  async function upvoteAction() {
+    await upvoteOpinion(id);
   }
 
-  function downvoteAction() {
-    console.log("Downvote");
+  async function downvoteAction() {
+    await downvoteOpinion(id);
   }
 
   return (
@@ -15,8 +20,10 @@ export function Opinion({ opinion: { id, title, body, userName, votes } }) {
       </header>
       <p>{body}</p>
       <form className="votes">
-        {/* We can use formAction to set an action to a button that exists inside the form. 
-            Button action can be different from form action.*/}
+        {/* 
+          We can use formAction to set an action to a button that exists inside the form. 
+          Button action can be different from form action. 
+        */}
         <button formAction={upvoteAction}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
