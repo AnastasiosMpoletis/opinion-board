@@ -1,4 +1,12 @@
 export function Opinion({ opinion: { id, title, body, userName, votes } }) {
+  function upvoteAction() {
+    console.log("Upvote");
+  }
+
+  function downvoteAction() {
+    console.log("Downvote");
+  }
+
   return (
     <article>
       <header>
@@ -7,7 +15,9 @@ export function Opinion({ opinion: { id, title, body, userName, votes } }) {
       </header>
       <p>{body}</p>
       <form className="votes">
-        <button>
+        {/* We can use formAction to set an action to a button that exists inside the form. 
+            Button action can be different from form action.*/}
+        <button formAction={upvoteAction}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -27,7 +37,7 @@ export function Opinion({ opinion: { id, title, body, userName, votes } }) {
 
         <span>{votes}</span>
 
-        <button>
+        <button formAction={downvoteAction}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
