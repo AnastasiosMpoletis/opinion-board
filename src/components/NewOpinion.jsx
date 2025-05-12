@@ -1,5 +1,6 @@
 import { useActionState, use } from "react";
 import { OpinionsContext } from '../store/opinions-context.jsx';
+import Submit from "./Submit.jsx";
 
 export function NewOpinion() {
   const { addOpinion } = use(OpinionsContext);
@@ -82,9 +83,17 @@ export function NewOpinion() {
           </ul>
         )}
 
-        <p className="actions">
-          <button type="submit">Submit</button>
-        </p>
+        {/** Button moved to {@link ./Submit.jsx} */}
+        {/* <p className="actions">
+          <button
+            type="submit"
+            // We can use pending to disable Submit button while addOpinion is executed.
+            // disabled={pending}
+          >Submit</button>
+        </p> */}
+
+        <Submit />
+
       </form>
     </div>
   );
